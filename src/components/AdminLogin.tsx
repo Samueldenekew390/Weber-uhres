@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShieldCheck, Lock, AlertCircle, ArrowLeft, Key, HelpCircle } from 'lucide-react';
+import { ShieldCheck, Lock, AlertCircle, ArrowLeft } from 'lucide-react';
 import { Language } from '../types';
 import { translations } from '../i18n/translations';
 import { apiService } from '../services/api';
@@ -21,7 +21,6 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [showSetupHelp, setShowSetupHelp] = useState(false);
 
   const navT = translations[currentLang].nav;
 
@@ -104,53 +103,13 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 px-4 rounded-lg bg-[#c5a059] hover:bg-[#b08d48] text-[#0a0a0a] font-bold text-xs uppercase tracking-wider shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full py-3.5 px-4 rounded-lg bg-[#c5a059] hover:bg-[#b08d48] text-[#0a0a0a] font-bold text-xs uppercase tracking-wider shadow-lg transition-all flex items-center justify-center gap-2"
             >
               <ShieldCheck className="w-4 h-4" />
               <span>{loading ? 'Anmelden...' : 'Anmelden / Login'}</span>
             </button>
           </form>
 
-          {/* Initial Setup & Recovery instructions accordian */}
-          <div className="pt-4 border-t border-zinc-800">
-            <button
-              type="button"
-              onClick={() => setShowSetupHelp(!showSetupHelp)}
-              className="w-full text-left text-xs text-zinc-400 hover:text-[#c5a059] flex items-center justify-between font-medium transition-colors"
-            >
-              <span className="flex items-center gap-1.5">
-                <HelpCircle className="w-3.5 h-3.5 text-[#c5a059]" />
-                <span>Ersteinrichtung &amp; Passwort-Setup Hilfe</span>
-              </span>
-              <span>{showSetupHelp ? '▴' : '▾'}</span>
-            </button>
-
-            {showSetupHelp && (
-              <div className="mt-4 p-4 rounded-lg bg-zinc-950 border border-zinc-800 text-xs space-y-3 text-zinc-300 leading-relaxed">
-                <div className="space-y-1">
-                  <p className="font-semibold text-white">1. Ersteinrichtung (Standard):</p>
-                  <p>
-                    Bei der ersten Verwendung lautet das Standard-Passwort:{' '}
-                    <code className="px-1.5 py-0.5 rounded bg-zinc-900 border border-zinc-800 font-mono text-[#c5a059]">
-                      admin123
-                    </code>
-                  </p>
-                </div>
-                <div className="space-y-1">
-                  <p className="font-semibold text-white">2. Passwort nach Login ändern:</p>
-                  <p>
-                    Nach der Anmeldung können Sie im Admin-Dashboard unter <strong>„Einstellungen / Passwort“</strong> ein neues, sicheres Passwort festlegen.
-                  </p>
-                </div>
-                <div className="space-y-1">
-                  <p className="font-semibold text-white">3. Sicherheit &amp; Recovery:</p>
-                  <p>
-                    In Produktionsumgebungen mit Full-Stack Server wird das Passwort über die Umgebungsvariable <code className="text-[#c5a059]">ADMIN_PASSWORD</code> im Server oder Hosting-Dashboard konfiguriert. Bei Verlust lässt sich die Variable im Server zurücksetzen.
-                  </p>
-                </div>
-              </div>
-            )}
-          </div>
         </div>
       </div>
     </div>
