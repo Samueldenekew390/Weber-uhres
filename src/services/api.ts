@@ -15,11 +15,16 @@ function getAuthHeader() {
 
 // Helper to handle API responses
 async function handleResponse<T>(response: Response): Promise<T> {
-  if (!response.ok) {
-    const error = await response
-      .json()
-      .catch(() => ({ error: "Unknown error" }));
-    throw new Error(error.error || `HTTP error! status: ${response.status}`);
+  const contentType = response.headers.get("content-type");
+  if (!response.ok || !contentType || !contentType.includes("application/json")) {
+    let errorMsg = `HTTP status ${response.status}`;
+    if (contentType && contentType.includes("application/json")) {
+      const error = await response.json().catch(() => ({ error: "Unknown error" }));
+      errorMsg = error.error || errorMsg;
+    } else {
+      errorMsg = `Server returned non-JSON response (e.g. static host SPA route)`;
+    }
+    throw new Error(errorMsg);
   }
   return response.json();
 }
@@ -295,16 +300,28 @@ export const apiService = {
       });
 
       if (res.ok) {
-        const data = await res.json();
-        if (data.success) {
-          localStorage.setItem(ADMIN_TOKEN_KEY, data.token);
-          return { success: true, token: data.token };
+        const contentType = res.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          const data = await res.json();
+          if (data.success) {
+            localStorage.setItem(ADMIN_TOKEN_KEY, data.token || ("weber_token_" + Date.now()));
+            return { success: true, token: data.token };
+          }
+          return { success: false, error: data.error || "Ungültiges Passwort / Invalid password" };
         }
-        return { success: false, error: data.error || "Invalid password" };
       }
-      return { success: false, error: "Server error" };
+
+      if (res.status === 401 || res.status === 400) {
+        const contentType = res.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          const data = await res.json();
+          return { success: false, error: data.error || "Ungültiges Passwort / Invalid password" };
+        }
+      }
+
+      throw new Error(`Server API route unavailable (HTTP ${res.status})`);
     } catch (error) {
-      console.warn("API error, using localStorage auth:", error);
+      console.warn("API error, using localStorage auth fallback:", error);
       // Fallback to localStorage
       const savedPassword =
         localStorage.getItem("weber_admin_password") || "admin123";
@@ -313,7 +330,7 @@ export const apiService = {
         localStorage.setItem(ADMIN_TOKEN_KEY, token);
         return { success: true, token };
       }
-      return { success: false, error: "Invalid password" };
+      return { success: false, error: "Ungültiges Passwort / Invalid password" };
     }
   },
 
@@ -335,21 +352,32 @@ export const apiService = {
       });
 
       if (res.ok) {
-        const data = await res.json();
-        return { success: true };
+        const contentType = res.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          localStorage.setItem("weber_admin_password", newPass);
+          return { success: true };
+        }
       }
-      const error = await res.json();
-      return {
-        success: false,
-        error: error.error || "Failed to change password",
-      };
+
+      if (res.status === 401 || res.status === 400) {
+        const contentType = res.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          const data = await res.json();
+          return {
+            success: false,
+            error: data.error || "Aktuelles Passwort ist falsch",
+          };
+        }
+      }
+
+      throw new Error(`Server API route unavailable (HTTP ${res.status})`);
     } catch (error) {
-      console.warn("API error, updating localStorage:", error);
+      console.warn("API error, updating localStorage fallback:", error);
       // Fallback to localStorage
       const savedPassword =
         localStorage.getItem("weber_admin_password") || "admin123";
       if (currentPass !== savedPassword) {
-        return { success: false, error: "Current password is incorrect" };
+        return { success: false, error: "Aktuelles Passwort ist falsch / Current password is incorrect" };
       }
       localStorage.setItem("weber_admin_password", newPass);
       return { success: true };
