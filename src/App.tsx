@@ -6,7 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import { Language, WatchServiceItem, AdminSettings } from './types';
 import { apiService } from './services/api';
-import { INITIAL_SERVICES } from './services/demoData';
+import { INITIAL_SERVICES, INITIAL_SETTINGS } from './services/demoData';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { ServiceShowcase } from './components/ServiceShowcase';
@@ -27,11 +27,7 @@ export default function App() {
   const [selectedServiceTitle, setSelectedServiceTitle] = useState<string | undefined>(undefined);
 
   // Settings loaded from server/localStorage
-  const [settings, setSettings] = useState<AdminSettings>({
-    businessName: 'Weber Uhrenservice',
-    email: 'darbas11@gmail.com',
-    phone: '+4915218263006',
-  });
+  const [settings, setSettings] = useState<AdminSettings>(INITIAL_SETTINGS);
 
   const [services, setServices] = useState<WatchServiceItem[]>(INITIAL_SERVICES);
 
