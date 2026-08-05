@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 240" fill="none">
+  <defs>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5e0a3" />
+      <stop offset="50%" stop-color="#d4af37" />
+      <stop offset="100%" stop-color="#997319" />
+    </linearGradient>
+    <linearGradient id="silver" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="50%" stop-color="#d4d4d8" />
+      <stop offset="100%" stop-color="#a1a1aa" />
+    </linearGradient>
+    <linearGradient id="darkGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d4af37" />
+      <stop offset="100%" stop-color="#71540a" />
+    </linearGradient>
+  </defs>
+
+  <!-- Outer Watch Ring -->
+  <circle cx="250" cy="72" r="62" stroke="url(#gold)" stroke-width="2" fill="none" opacity="0.85" />
+  <circle cx="250" cy="72" r="58" stroke="url(#gold)" stroke-width="0.75" fill="none" opacity="0.4" />
+  <!-- Watch Hands -->
+  <line x1="250" y1="72" x2="225" y2="50" stroke="url(#gold)" stroke-width="2.5" stroke-linecap="round" />
+  <line x1="250" y1="72" x2="280" y2="45" stroke="url(#gold)" stroke-width="2" stroke-linecap="round" />
+  <circle cx="250" cy="72" r="4.5" fill="url(#gold)" />
+  <circle cx="250" cy="72" r="2" fill="#0f0f11" />
+
+  <!-- Gear / Movement outline in center base of W -->
+  <circle cx="250" cy="98" r="22" stroke="url(#gold)" stroke-width="2" stroke-dasharray="6,4" fill="#18181b" />
+  <circle cx="250" cy="98" r="16" stroke="#71717a" stroke-width="1.5" fill="none" />
+  <circle cx="250" cy="98" r="7" stroke="url(#gold)" stroke-width="1.5" fill="none" />
+
+  <!-- Monogram W -->
+  <path d="M205 45 L225 110 L250 65 L275 110 L295 45 L284 45 L268 96 L250 58 L232 96 L216 45 Z" fill="url(#gold)" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.8))" />
+
+  <!-- Divider Line -->
+  <line x1="60" y1="130" x2="210" y2="130" stroke="url(#gold)" stroke-width="1.5" />
+  <line x1="290" y1="130" x2="440" y2="130" stroke="url(#gold)" stroke-width="1.5" />
+
+  <!-- WEBER Typography in Brushed Silver/Platinum -->
+  <text x="250" y="172" text-anchor="middle" font-family="'Playfair Display', serif" font-weight="700" font-size="52" fill="url(#silver)" letter-spacing="10">WEBER</text>
+
+  <!-- UHRMACHERMEISTER / UHRNSERVICE in Gold -->
+  <text x="250" y="198" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="14" fill="url(#gold)" letter-spacing="6">— UHRENSERVICE —</text>
+  <text x="250" y="222" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-weight="500" font-size="9" fill="#a1a1aa" letter-spacing="3.5">UHRMACHERMEISTER • PRÄZISION &amp; VERTRAUEN</text>
+</svg>
